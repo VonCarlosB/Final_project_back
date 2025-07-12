@@ -1,0 +1,34 @@
+{
+  "name": "final_project_back",
+  "version": "1.0.0",
+  "description": "Backend part for the final project. This will handle the database, creating and reading products and users and editing and deleteing products related to those users",
+  "homepage": "https://github.com/VonCarlosB/Final_project_back#readme",
+  "bugs": {
+    "url": "https://github.com/VonCarlosB/Final_project_back/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/VonCarlosB/Final_project_back.git"
+  },
+  "license": "ISC",
+  "author": "",
+  "type": "commonjs",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node --watch index.js"
+  },
+  "dependencies": {
+    "body-parser": "2.2.0",
+    "cloudinary": "1.41.3",
+    "cors": "2.8.5",
+    "dotenv": "17.2.0",
+    "express": "5.1.0",
+    "express-session": "1.18.1",
+    "mongodb": "6.17.0",
+    "mongoose": "8.16.3",
+    "multer": "2.0.1",
+    "multer-storage-cloudinary": "4.0.0"
+  },
+  "devDependencies": {}
+}
