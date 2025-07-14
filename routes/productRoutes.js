@@ -61,12 +61,21 @@ router.post('/products/create', async (req, res) => {
     }
 })
 
+router.put('/products/:productId', async (req, res) => {
+    try {
+        const {owner, name, description, image, price} = req.body
+        const product = await Product.findByIdAndUpdate(req.params.productId, {owner, name, description, image, price}, {new:true})
+    } catch (error) {
+        res.status(500).send({message: 'There was a problem trying to update the product\nError: '+error})
+    }
+})
+
 router.delete('/products/:productId', async (req, res) => {
     try {
         const product = await Product.findByIdAndDelete(req.params.productId)
         res.status(201).send(product)
     } catch (error) {
-        res.status(500).send({message: 'There was a problem trying to delete the product', error:error})
+        res.status(500).send({message: 'There was a problem trying to delete the product\nError: '+error})
     }
 })
 
