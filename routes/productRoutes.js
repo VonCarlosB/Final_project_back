@@ -65,6 +65,7 @@ router.put('/products/:productId', async (req, res) => {
     try {
         const {owner, name, description, image, price} = req.body
         const product = await Product.findByIdAndUpdate(req.params.productId, {owner, name, description, image, price}, {new:true})
+        res.status(201).send(product)
     } catch (error) {
         res.status(500).send({message: 'There was a problem trying to update the product\nError: '+error})
     }
