@@ -12,6 +12,8 @@ router.get('/users/:userName', UserController.getUserByName)
 
 router.post('/users/create', upload.single('image'), UserController.createUser)
 
+router.post('/users/login', UserController.login)
+
 router.put('/users/:userId', upload.single('image'), UserController.editUser)
 
 router.delete('/users/:userId', UserController.deleteUser)

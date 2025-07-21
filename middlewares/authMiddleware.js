@@ -1,35 +1,16 @@
-const session = require('express-session')
-const bodyParser = require('body-parser')
+const jwt = require('jsonwebtoken');
 
-const setupAPP = (app) => {
-    app.use(bodyParser.urlencoded({ extended:true }))
-    app.use(session({
-        secret: 'secretoSuperSecreto',
-        resave: false,
-        saveUninitialized: true,
-    }))
-}
+const authMiddleware = (req, res, next) => {
+    const token = req.headers.authorization?.split(' ')[1];
+    if (!token) return res.status(401).json({ error: 'Token requerido' });
 
-const verifySession = (req, res, next) => {
-    if(req.session.password){
-        next()
-    }else{
-        res.redirect('auth/?error=2')
+    try {
+        const decoded = jwt.verify(token, process.env.JWT_SECRET);
+        req.userId = decoded.id;
+        next();
+    } catch {
+        res.status(401).json({ error: 'Token inválido' });
     }
-}
+};
 
-const validatePassword = (req, res, next) => {
-    const password = process.env.PASSWORD || ''
-    if(req.body.password == password){
-        req.session.password = req.body.password
-        next()
-    }else{
-        res.redirect('/?error=1')
-    }
-}
-
-module.exports = {
-    setupAPP,
-    verifySession,
-    validatePassword
-}
+module.exports = authMiddleware;

@@ -5,41 +5,41 @@ const ProductController = {
     async getAllProducts (req, res) {
         try {
             const allProducts = await Product.find()
-            res.status(201).send(allProducts)
-        } catch (error) {
-            res.status(503).send({message: 'There was a problem trying to get all products\nError: '+error})
+            res.status(201).json({ allProducts })
+        } catch (err) {
+            res.status(503).json({error: 'There was a problem trying to get all products\nError: '+err})
         }
     },
 
     async getProductsByUser (req, res) {
         try {
-            const user = await User.find({name: req.params.user}).exec()
-            if(user.length !== 0){
+            const user = await User.findOne({name: req.params.user})
+            if(user){
                 const products = await Product.find({owner: req.params.user}).exec()
-                res.status(201).send(products)
+                res.status(201).json({ products })
             }else{
-                res.status(404).send({message: `This user doesn't exist`})
+                res.status(404).json({error: `This user doesn't exist`})
             }
-        } catch (error) {
-            res.status(503).send({message: `There was a problem trying to get user "${req.params.user}"\nError: ${error}`})
+        } catch (err) {
+            res.status(503).json({error: `There was a problem trying to get user "${req.params.user}"\nError: ${err}`})
         }
     },
 
     async getProductById(req, res) {
         try {
             const product = await Product.findById(req.params.productId)
-            res.status(201).send(product)
-        } catch (error) {
-            res.status(503).send({message: 'There was a problem trying to get the product\nError: '+error})
+            res.status(201).json({product})
+        } catch (err) {
+            res.status(503).json({error: 'There was a problem trying to get the product\nError: '+err})
         }
     },
 
     async getProductsByName (req, res) {
         try {
             const product = await Product.find({name: new RegExp(req.params.productName, 'i')}).exec()
-            res.status(201).send(product)
-        } catch (error) {
-            res.status(503).send({message: 'There was a problem trying to get the product\nError: '+error})
+            res.status(201).json({product})
+        } catch (err) {
+            res.status(503).json({error: 'There was a problem trying to get the product\nError: '+err})
         }
     },
 
@@ -47,15 +47,15 @@ const ProductController = {
         try {
             const {owner, name, description, price} = req.body
             const image = req.file.path
-            const user = await User.find({name: owner}).exec()
-            if(user.length !== 0){
+            const user = await User.findOne({name: owner})
+            if(user){
                 const product = await Product.create({owner, name, description, image, price})
-                res.status(201).send(product)
+                res.status(201).json({product})
             }else{
-                res.status(403).send({message: 'This user does not exist'})
+                res.status(403).json({error: 'This user does not exist'})
             }
-        } catch (error) {
-            res.status(503).send({message: 'There was a problem trying to create the product\nError: '+error})
+        } catch (err) {
+            res.status(503).json({error: 'There was a problem trying to create the product\nError: '+err})
         }
     },
 
@@ -64,18 +64,18 @@ const ProductController = {
             const {name, description, price} = req.body
             const image = req.file.path
             const product = await Product.findByIdAndUpdate(req.params.productId, {name, description, image, price}, {new:true})
-            res.status(201).send(product)
-        } catch (error) {
-            res.status(503).send({message: 'There was a problem trying to update the product\nError: '+error})
+            res.status(201).json({product})
+        } catch (err) {
+            res.status(503).json({error: 'There was a problem trying to update the product\nError: '+err})
         }
     },
 
     async deleteProduct (req, res) {
         try {
             const product = await Product.findByIdAndDelete(req.params.productId)
-            res.status(201).send(product)
-        } catch (error) {
-            res.status(503).send({message: 'There was a problem trying to delete the product\nError: '+error})
+            res.status(201).json({product})
+        } catch (err) {
+            res.status(503).json({error: 'There was a problem trying to delete the product\nError: '+err})
         }
     }
 }
