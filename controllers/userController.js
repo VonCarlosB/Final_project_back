@@ -28,17 +28,16 @@ const UserController = {
 
     async createUser (req, res) {
         try {
-            const {name, password, description, age} = req.body
-            const image = req.file.path
+            const {name, password} = req.body
 
             const user = await User.findOne({ name })
             if(user){
                 res.status(403).json({error: 'El usuario ya existe'})
             }else{
                 const hashed = await bcrypt.hash(password, 10)
-                const newUser = await User.create({name, password:hashed, description, image, age})
+                const newUser = await User.create({name, password:hashed, description:'', image:'', age:0})
 
-                const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET)
+                const token = jwt.sign({ id: newUser._id }, process.env.JWT_SECRET)
                 res.status(201).json({ token })
             }
         } catch (err) {
@@ -54,7 +53,7 @@ const UserController = {
                 return res.status(403).json({ error: 'Credenciales incorrectas' })
             }else{
                 const token = jwt.sign({ id:user._id }, process.env.JWT_SECRET)
-                res.json({ token })
+                res.status(201).json({ token })
             }
         } catch (err) {
             res.status(500).json({ error: 'Error al iniciar sesión\nError:'+err })
@@ -63,9 +62,9 @@ const UserController = {
 
     async editUser (req, res) {
         try {
-            const {name, password, description, age} = req.body
+            const {password, description, age} = req.body
             const image = req.file.path
-            const user = await User.findByIdAndUpdate(req.params.userId, {name, password, description, image, age}, {new:true})
+            const user = await User.findByIdAndUpdate(req.params.userId, {password, description, image, age}, {new:true})
             res.status(201).json(user)
         } catch (err) {
             res.status(503).json({ error: 'There was a problem trying to delete the user\nError: '+err })

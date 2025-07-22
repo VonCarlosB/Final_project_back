@@ -10,7 +10,7 @@ router.get('/users', UserController.getAllUsers)
 
 router.get('/users/:userName', UserController.getUserByName)
 
-router.post('/users/create', upload.single('image'), UserController.createUser)
+router.post('/users/create', UserController.createUser)
 
 router.post('/users/login', UserController.login)
 
