@@ -2,6 +2,7 @@ const bcrypt = require('bcryptjs')
 const jwt = require('jsonwebtoken')
 const User = require('../models/User')
 const Product = require('../models/Product')
+const defaultUserImage = 'https://res.cloudinary.com/dp2prqxfo/image/upload/v1753290203/default-avatar-profile-icon-social-media-user-free-vector_jbv3vd.jpg'
 
 const UserController = {
     async getAllUsers (req, res) {
@@ -35,7 +36,12 @@ const UserController = {
                 res.status(403).json({error: 'El usuario ya existe'})
             }else{
                 const hashed = await bcrypt.hash(password, 10)
-                const newUser = await User.create({name, password:hashed, description:'', image:'', age:0})
+                const newUser = await User.create({
+                    name, 
+                    password:hashed, 
+                    description:'', 
+                    image:defaultUserImage, 
+                    age:0})
 
                 const token = jwt.sign({ id: newUser._id }, process.env.JWT_SECRET)
                 res.status(201).json({ token })

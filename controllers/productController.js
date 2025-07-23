@@ -1,5 +1,6 @@
 const Product = require('../models/Product')
 const User = require('../models/User')
+const defaultProductImage = 'https://res.cloudinary.com/dp2prqxfo/image/upload/v1753027498/no-image-available-icon-vector_kyibzy.jpg'
 
 const ProductController = {
     async getAllProducts (req, res) {
@@ -46,7 +47,7 @@ const ProductController = {
     async createProduct(req, res) {
         try {
             const {owner, name, description, price} = req.body
-            const image = req.file.path
+            const image = req.file.path || defaultProductImage
             const user = await User.findOne({name: owner})
             if(user){
                 const product = await Product.create({owner, name, description, image, price})
