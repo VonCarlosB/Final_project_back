@@ -69,7 +69,7 @@ const UserController = {
     async editUser (req, res) {
         try {
             const {password, description, age} = req.body
-            const image = req.file.path
+            const image = req.file ? req.file.path : defaultUserImage
             const user = await User.findByIdAndUpdate(req.params.userId, {password, description, image, age}, {new:true})
             res.status(201).json(user)
         } catch (err) {

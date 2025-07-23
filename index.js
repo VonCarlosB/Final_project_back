@@ -1,6 +1,7 @@
 const express = require('express')
 require('dotenv').config()
 const cors = require('cors')
+const bodyParser = require('body-parser')
 const dbConnection = require('./config/db')
 const productRoutes = require('./routes/productRoutes')
 const userRoutes = require('./routes/userRoutes')
@@ -13,7 +14,8 @@ app.use(cors({
     credentials: true
 }))
 app.use(express.json())
-app.use(express.urlencoded({ extended:true }))
+app.use(bodyParser.json({limit: '10mb'}))
+app.use(bodyParser.urlencoded({ extended:true, limit: '10mb' }))
 
 app.use(productRoutes, userRoutes)
 

@@ -47,7 +47,7 @@ const ProductController = {
     async createProduct(req, res) {
         try {
             const {owner, name, description, price} = req.body
-            const image = req.file.path || defaultProductImage
+            const image = req.file ? req.file.path : defaultProductImage
             const user = await User.findOne({name: owner})
             if(user){
                 const product = await Product.create({owner, name, description, image, price})
