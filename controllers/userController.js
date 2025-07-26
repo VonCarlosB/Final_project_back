@@ -39,7 +39,7 @@ const UserController = {
                 const newUser = await User.create({
                     name, 
                     password:hashed, 
-                    description:'', 
+                    description:'Este usuario aún no tiene una descripción', 
                     image:defaultUserImage, 
                     age:0})
 
