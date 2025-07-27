@@ -62,8 +62,9 @@ const ProductController = {
 
     async editProduct (req, res) {
         try {
+            const producto = await Product.findById(req.params.productId)
             const {name, description, price} = req.body
-            const image = req.file ? req.file.path : defaultProductImage
+            const image = req.file ? req.file.path : producto.image
             const product = await Product.findByIdAndUpdate(req.params.productId, {name, description, image, price}, {new:true})
             res.status(201).json(product)
         } catch (err) {
