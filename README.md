@@ -96,4 +96,6 @@ Para utilizar el código de este proyecto deberá descargarse en una carpeta y c
 
 A continuación se debe crear un archivo .env donde se deben colocar las variables de entorno expuestas previamente.
 
+Antes de terminar, en el archivo `index.js` deberá sustituirse la URL de cors `origin` por la URL del frontend. `origin: 'https://expositorweb.netlify.app',`
+
 Por último se ejecutará el comando `npm start` que ejecutará el servicio en local en el puerto establecido en la variable PORT.
